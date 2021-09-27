@@ -1,3 +1,4 @@
+import 'package:ff_mobile/backend/database.dart';
 import 'package:ff_mobile/config/constant.dart';
 import 'package:flutter/material.dart';
 
@@ -111,7 +112,7 @@ class _RegisterState extends State<Register> {
           }
         },
         onSaved: (value) {
-          email = value!.trim();
+          email = value;
         },
       ),
     );
@@ -132,7 +133,7 @@ class _RegisterState extends State<Register> {
         ),
         obscureText: true,
         onSaved: (value) {
-          password= value!.trim();
+          password = value;
         },
       ),
     );
@@ -140,13 +141,15 @@ class _RegisterState extends State<Register> {
 
   Widget btnSubmit() {
     return ElevatedButton(
+      child: Text('Submit'),
       onPressed: () {
         if (formkey.currentState!.validate()) {
           formkey.currentState!.save();
-          print("ชื่อ: $name นามสกุล: $surname อีเมลล์: $email พาสเวิร์ด: $password");
+          var local = LocalDB();
+          local.Register(name, surname, email, password);
+          Navigator.pushNamed(context, 'login');
         }
       },
-      child: Text('Submit'),
     );
   }
 }
